@@ -7,12 +7,7 @@ interface TodosState {
 }
 
 const initialState: TodosState = {
-  value: [
-    // TODO: remove
-    { content: "Hello, world!", isCompleted: false },
-    { content: "Goodbye, world!", isCompleted: true },
-    { content: "Hello, PR Volt!", isCompleted: false },
-  ]
+  value: []
 }
 
 export const todosSlice = createSlice({
