@@ -1,12 +1,10 @@
 import { FunctionComponent, useState } from "react"
 import { Badge, Button, ButtonGroup, Col, Form, ListGroup, Row } from "react-bootstrap"
 import { TodoRecord, maxContentLength } from "../../model/todo-record.interface"
+import { useAppDispatch, useAppSelector } from "../../app/hooks"
+import { add, remove, selectTodos, setCompleted } from "../../app/todosSlice"
 
-interface TodoListProps {
-  records: TodoRecord[]
-}
-
-const TodoList: FunctionComponent<TodoListProps> = ({ records }) => {
+const TodoList: FunctionComponent = () => {
   const filters = {
     all: {
       label: "All",
@@ -23,10 +21,18 @@ const TodoList: FunctionComponent<TodoListProps> = ({ records }) => {
   }
   const [newRecordContent, setNewRecordContent] = useState("")
   const [currentFilter, setCurrentFilter] = useState<keyof typeof filters>("all")
+  const todos = useAppSelector(selectTodos)
+  const dispatch = useAppDispatch()
   const handleInputKeyUp = (event: React.KeyboardEvent<HTMLInputElement>): void => {
     if(event.key !== "Enter" || newRecordContent.length === 0 || newRecordContent.length > maxContentLength) return
-    // TODO: add record
+    dispatch(add(newRecordContent))
     setNewRecordContent("")
+  }
+  const handleRecordChange = (index: number) => (event: React.ChangeEvent<HTMLInputElement>): void => {
+    dispatch(setCompleted([index, event.target.checked]))
+  }
+  const handleRecordDelete = (index: number) => (): void => {
+    dispatch(remove(index))
   }
   return (
     <div>
@@ -38,7 +44,7 @@ const TodoList: FunctionComponent<TodoListProps> = ({ records }) => {
             variant="light"
             onClick={() => setCurrentFilter(filterKey as keyof typeof filters)}
           >
-            {label} <Badge bg="secondary">{records.filter(predicate).length}</Badge>
+            {label} <Badge bg="secondary">{todos.filter(predicate).length}</Badge>
           </Button>
         )}
       </ButtonGroup>
@@ -56,7 +62,7 @@ const TodoList: FunctionComponent<TodoListProps> = ({ records }) => {
         {maxContentLength - newRecordContent.length} characters remaining
       </Form.Text>
       <ListGroup className="mt-3">
-        {records.filter(filters[currentFilter].predicate).map((record, index) =>
+        {todos.map((record, index) => [record, index] as [TodoRecord, number]).filter(([record]) => filters[currentFilter].predicate(record)).map(([record, index]) =>
           <ListGroup.Item key={index} className="hover-parent">
             <Row>
               <Col>
@@ -65,11 +71,15 @@ const TodoList: FunctionComponent<TodoListProps> = ({ records }) => {
                   id={`todo-record-${index}`}
                   label={record.content}
                   checked={record.isCompleted}
+                  onChange={handleRecordChange(index)}
                 />
               </Col>
               <Col xs="2" md="1" className="text-end">
-                <Button variant="light" className="btn-close hover-child" />
-                {/* TODO: delete record */}
+                <Button
+                  variant="light"
+                  className="btn-close hover-child"
+                  onClick={handleRecordDelete(index)}
+                />
               </Col>
             </Row>
           </ListGroup.Item>
