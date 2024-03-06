@@ -14,4 +14,8 @@
 	user-select: none;
 	-moz-user-select: none;
 	-webkit-user-select: none;
+	.form-check-input:checked ~ & {
+		text-decoration: line-through;
+		color: $secondary;
+	}
 }
