@@ -1,1 +1,17 @@
 @import "../node_modules/bootstrap/scss/bootstrap.scss";
+
+.hover-parent .hover-child {
+	@media (hover: hover) {
+		display: none;
+	}
+}
+
+.hover-parent:hover .hover-child {
+	display: initial;
+}
+
+.form-check-label {
+	user-select: none;
+	-moz-user-select: none;
+	-webkit-user-select: none;
+}
