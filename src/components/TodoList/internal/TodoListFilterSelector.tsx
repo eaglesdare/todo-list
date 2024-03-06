@@ -17,7 +17,7 @@ const TodoListFilterSelector: FunctionComponent<TodoListFilterSelectorProps> = (
           key={filterKey}
           active={filterKey === value}
           variant="light"
-          onClick={() => onChange(filterKey as keyof typeof filters)}
+          onClick={() => onChange(filterKey as TodoListFilterValue)}
         >
           {label} <Badge bg="secondary">{todos.filter(predicate).length}</Badge>
         </Button>
