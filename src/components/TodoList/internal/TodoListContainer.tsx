@@ -24,7 +24,7 @@ const TodoListContainer: FunctionComponent<TodoListContainerProps> = ({ filter }
       {todos.map((record, index) => [record, index] as [TodoRecord, number]).filter(([record]) => filters[filter].predicate(record)).map(([record, index]) =>
         <ListGroup.Item key={index} className="hover-parent">
           <Row>
-            <Col>
+            <Col xs="10" md="11" className="text-break">
               <Form.Check
                 type="checkbox"
                 id={`todo-record-${index}`}
