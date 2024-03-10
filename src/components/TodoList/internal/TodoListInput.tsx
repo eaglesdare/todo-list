@@ -2,10 +2,13 @@ import { Form } from "react-bootstrap"
 import { maxContentLength } from "../../../model/todo-record.interface"
 import { FunctionComponent, useState } from "react"
 import { add } from "../../../app/todosSlice"
-import { useAppDispatch } from "../../../app/hooks"
+import { AppDispatch } from "../../../app/store"
 
-const TodoListInput: FunctionComponent = () => {
-  const dispatch = useAppDispatch()
+interface TodoListInputProps {
+  dispatch: AppDispatch
+}
+
+const TodoListInput: FunctionComponent<TodoListInputProps> = ({ dispatch }) => {
   const [newRecordContent, setNewRecordContent] = useState("")
   const handleInputKeyUp = (event: React.KeyboardEvent<HTMLInputElement>): void => {
     if(event.key !== "Enter" || newRecordContent.length === 0 || newRecordContent.length > maxContentLength) return

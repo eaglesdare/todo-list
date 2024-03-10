@@ -1,15 +1,14 @@
 import { FunctionComponent } from "react"
 import { ButtonGroup, Button, Badge } from "react-bootstrap"
-import { useAppSelector } from "../../../app/hooks"
-import { selectTodos } from "../../../app/todosSlice"
 import { filters } from "./filters"
+import { TodoRecord } from "../../../model/todo-record.interface"
 
 interface TodoListFilterSelectorProps {
   value: TodoListFilterValue
   onChange: (value: TodoListFilterValue) => void
+  todos: TodoRecord[]
 }
-const TodoListFilterSelector: FunctionComponent<TodoListFilterSelectorProps> = ({ value, onChange }) => {
-  const todos = useAppSelector(selectTodos)
+const TodoListFilterSelector: FunctionComponent<TodoListFilterSelectorProps> = ({ value, onChange, todos }) => {
   return (
     <ButtonGroup className="d-block">
       {Object.entries(filters).map(([filterKey, { label, predicate }]) =>

@@ -3,16 +3,16 @@ import { TodoRecord } from "../../../model/todo-record.interface"
 import { filters } from "./filters"
 import { TodoListFilterValue } from "./TodoListFilterSelector"
 import { FunctionComponent } from "react"
-import { useAppSelector, useAppDispatch } from "../../../app/hooks"
-import { selectTodos, setCompleted, remove } from "../../../app/todosSlice"
+import { setCompleted, remove } from "../../../app/todosSlice"
+import { AppDispatch } from "../../../app/store"
 
 interface TodoListContainerProps {
   filter: TodoListFilterValue
+  todos: TodoRecord[]
+  dispatch: AppDispatch
 }
 
-const TodoListContainer: FunctionComponent<TodoListContainerProps> = ({ filter }) => {
-  const todos = useAppSelector(selectTodos)
-  const dispatch = useAppDispatch()
+const TodoListContainer: FunctionComponent<TodoListContainerProps> = ({ filter, todos, dispatch }) => {
   const handleRecordChange = (index: number) => (event: React.ChangeEvent<HTMLInputElement>): void => {
     dispatch(setCompleted([index, event.target.checked]))
   }
